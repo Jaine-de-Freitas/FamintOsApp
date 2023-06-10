@@ -7,6 +7,12 @@ package tela;
 
 import DAO.PedidosDAO;
 import DTO.PedidosDTO;
+
+/*import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.layout.element.Image;*/
+
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.io.FileNotFoundException;
@@ -38,7 +44,24 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.event.ActionListener;
 import java.io.FileOutputStream;
+import java.net.MalformedURLException;
 
+//import com.itextpdf.io.image.ImageData; 
+//import com.itextpdf.io.image.ImageDataFactory; 
+import com.itextpdf.text.Image;
+import com.itextpdf.kernel.pdf.PdfDocument; 
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.pdf.BaseFont;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+//import com.itextpdf.kernel.pdf.PdfWriter;
+
+//import com.itextpdf.layout.Document; 
+//import com.itextpdf.layout.element.Image;
 /**
  *
  * @author jaine
@@ -275,7 +298,7 @@ public class PedidosG extends javax.swing.JFrame {
 
         String compras = "";
         for (int n = 0; n < setar.size(); n++) {
-            int numero=0;
+            int numero = 0;
             PedidosDAO pddDAO = new PedidosDAO();
             PedidosDTO pddDTO = new PedidosDTO();
             pddDTO.setBusca(arr[n]);
@@ -298,7 +321,7 @@ public class PedidosG extends javax.swing.JFrame {
                     nome[0] = pedidosE.get(num).getNome_cliente();
                     mesa[0] = pedidosE.get(num).getCd_mesa();
                     listagem[num] = "    " + pedidosE.get(num).getQt_comida() + "    " + teste[ns]/*+valor */ + "    R$" + pedidosE.get(num).getVl_item() + " /und"/* + " R$" + pedidosE.get(num).getVl_total_item()*/;
-                    numero=numero+1;
+                    numero = numero + 1;
                     compras = compras + listagem[num] + "\n";
                     String[] conv = new String[1];
                     conv[0] = pedidosE.get(num).getVl_total_item();
@@ -319,16 +342,15 @@ public class PedidosG extends javax.swing.JFrame {
             JTextArea jTextArea = new javax.swing.JTextArea("jTextArea" + n);
             String total = String.format("%58.5s", " ");
             String dados;
-            dados = "\n" + "  Nome do cliente: " + nome[0] + "\n" + "  Nº Ticket: " + arr[n] + "\n" + "  Nº Mesa: " + mesa[0] + "\n" + "\n" + "  Qtde    Descrição" + "\n" + compras + "\n" + "\n" + total + "TOTAL:   R$" + formSoma;
+            dados = "\n" + "  Nome do cliente: " + nome[0] + "\n" + "  Nº Ticket: " + arr[n] + "\n" + "  Nº Mesa: " + mesa[0] + "\n" + "\n" + "  Qtde    Descrição" + "\n" + compras + "\n" + "\n" + total /*+ "TOTAL:   R$" + formSoma*/;
 
             JScrollPane scroll = new JScrollPane(jTextArea);
             scroll.setBounds(15 + 320 * n, 20, 310, 390);
 
             panelroll.add(scroll);
-
             jTextArea.setLineWrap(true);
             jTextArea.setWrapStyleWord(true);
-            jTextArea.setText(dados);
+            jTextArea.setText(dados+"TOTAL:   R$" + formSoma);
             jTextArea.setEditable(false);
             jTextArea.setSelectionColor(Color.white);
             jTextArea.setSelectedTextColor(Color.black);
@@ -340,9 +362,15 @@ public class PedidosG extends javax.swing.JFrame {
             } else {
                 jTextArea.setBounds(15 + 320 * n, 20, 310, 390);
             }
+            
+            String exibe="TOTAL:   R$" + formSoma;
+            Date dataHoraAtual = new Date();
+            String data = new SimpleDateFormat("dd-MM-yyyy").format(dataHoraAtual);
+            String hora = new SimpleDateFormat("HH:mm:ss").format(dataHoraAtual);
             String nmarq = arr[n];
             compras = "";
-            int testes=(180+(20*numero));
+            int testes = (340+ (20 * numero));
+            String caminho="D:\\FamintosJava1.2\\images\\logofamintospdf.png";
             jTextArea.setCaretPosition(0);
             jTextArea.addMouseListener(new java.awt.event.MouseAdapter() {
                 @Override
@@ -354,23 +382,34 @@ public class PedidosG extends javax.swing.JFrame {
                             @Override
                             public void actionPerformed(ActionEvent evt1) {
                                 System.out.println("I");
+                                Rectangle pagesize = new Rectangle(280f, testes /*f720f*/);
+                                Document documento = new Document(pagesize, 10f, 10f, 50f, 10f);
                                 try {
-                                    
-                                    Rectangle pagesize = new Rectangle(320f, 720f /*f720f*/);
-                                    Document documento = new Document(pagesize, 10f, 10f, 0f, 10f);
-                                    try {
-                                        PdfWriter.getInstance(documento, new FileOutputStream("D:\\guardarpdfs\\"+nmarq+".pdf"));
+                                    PdfWriter.getInstance(documento, new FileOutputStream("D:\\guardarpdfs\\" + nmarq + ".pdf"));
                                     documento.open();
-                                    Paragraph pgr=new Paragraph(dados);
-                                    //pgr.setAlignment(Element.ALIGN_CENTER);
-                                    //documento.setPageSize(PageSize.A10);
-                                    documento.add(pgr);
+                                    Font fonte=new Font(FontFamily.COURIER,10,Font.BOLD);
+                                    Font fonte2=new Font(FontFamily.UNDEFINED,11,Font.NORMAL);
+                                    Font fonte3=new Font(FontFamily.COURIER,13,Font.BOLD);
+                                    Paragraph pgr1 = new Paragraph("Engenho D'Àgua, 1000, Jardim-CE"+"\n"+"(88) 9812-3456"+"\n"+"\n"+"Impresso em "+data+" "+hora+"\n"+"******** NÃO É CUPOM FISCAL ********",fonte);
+                                    Paragraph pgr2 = new Paragraph(dados,fonte2);
+                                    Paragraph pgr3 = new Paragraph(exibe+" ",fonte3);
+                                    Paragraph pgr4 = new Paragraph("\n"+"******** VOLTE SEMPRE *********",fonte);
+                                    Image img=Image.getInstance(String.format(caminho));
+                                    img.scaleAbsolute(150, 43);
+                                    img.setAbsolutePosition(67, (testes-50));
+                                    pgr1.setAlignment(Element.ALIGN_CENTER);
+                                    pgr3.setAlignment(Element.ALIGN_RIGHT);
+                                    pgr4.setPaddingTop(25);
+                                    pgr4.setAlignment(Element.ALIGN_CENTER);
+                                    documento.add(img);
+                                    documento.add(pgr1);
+                                    documento.add(pgr2);
+                                    documento.add(pgr3);
+                                    documento.add(pgr4);
                                     documento.close();
-                                    } catch (DocumentException ex) {
-                                        Logger.getLogger(PedidosG.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
-                                    
-                                } catch (FileNotFoundException ex) {
+                                } catch (DocumentException ex) {
+                                    Logger.getLogger(PedidosG.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (IOException ex) {
                                     Logger.getLogger(PedidosG.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             }

@@ -10,9 +10,9 @@ package DTO;
  * @author jaine
  */
 public class EstoqueDTO {
-    private String produto,categoria,lote,vencimento,preco,filtro,txtPesq,data_cadastro;
-    private double id_produto;
-    private int quantidade;
+    private String produto,categoria,lote,vencimento,preco,filtro,txtPesq,data_cadastro,operacao,valor;
+    private double id_produto,id_p_tbl;
+    private int quantidade, qtd_tbl;
 
     /**
      * @return the produto
@@ -152,6 +152,62 @@ public class EstoqueDTO {
      */
     public void setData_cadastro(String data_cadastro) {
         this.data_cadastro = data_cadastro;
+    }
+
+    /**
+     * @return the id_p_tbl
+     */
+    public double getId_p_tbl() {
+        return id_p_tbl;
+    }
+
+    /**
+     * @param id_p_tbl the id_p_tbl to set
+     */
+    public void setId_p_tbl(double id_p_tbl) {
+        this.id_p_tbl = id_p_tbl;
+    }
+
+    /**
+     * @return the operacao
+     */
+    public String getOperacao() {
+        return operacao;
+    }
+
+    /**
+     * @param operacao the operacao to set
+     */
+    public void setOperacao(String operacao) {
+        this.operacao = operacao;
+    }
+
+    /**
+     * @return the qtd_tbl
+     */
+    public int getQtd_tbl() {
+        return qtd_tbl;
+    }
+
+    /**
+     * @param qtd_tbl the qtd_tbl to set
+     */
+    public void setQtd_tbl(int qtd_tbl) {
+        this.qtd_tbl = qtd_tbl;
+    }
+
+    /**
+     * @return the valor
+     */
+    public String getValor() {
+        return valor;
+    }
+
+    /**
+     * @param valor the valor to set
+     */
+    public void setValor(String valor) {
+        this.valor = valor;
     }
 
     

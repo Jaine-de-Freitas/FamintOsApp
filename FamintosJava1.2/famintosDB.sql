@@ -46,11 +46,11 @@ create table Produtos(
 select *from Funcionario where funcao like '%c%';
 select *from Produtos;
 
-insert into Produtos (produto,categoria,lote,vencimento,quantidade,valor,data_cadastro) values('Farinha Branca 500g - Dona Benta','Secos','VEJ4Q3','2025-09-24','12','R$5,00','2023-04-08 11:06:28');
-insert into Produtos (produto,categoria,lote,vencimento,quantidade,valor,data_cadastro) values('Carne Seca','Carnes e Frios','W4543GH','2022-10-20','5','R$50,00','2022-10-18 15:06:40');
-insert into Produtos (produto,categoria,lote,vencimento,quantidade,valor,data_cadastro) values('Tampico 250ml','Bebidas','VN25B7','2020-03-09','10','R$2,50','2023-04-10 18:06:28');
-insert into Produtos (produto,categoria,lote,vencimento,quantidade,valor,data_cadastro) values('Maionese Hellmann´s','Molhos','9NV537TVCV3F','2023-10-15','20','R$8,50','2023-04-08 12:06:28');
-insert into Produtos (produto,categoria,lote,vencimento,quantidade,valor,data_cadastro) values('Xesperito Flocos 1L','Sorveteria','24CBV7','2025-12-27','30','R$12,00','2020-04-08 15:06:28');
+insert into Produtos (produto,categoria,lote,vencimento,quantidade,valor,data_cadastro) values('Farinha Branca 500g - Dona Benta','Secos','VEJ4Q3','2025-09-24','12','5.00','2023-04-08 11:06:28');
+insert into Produtos (produto,categoria,lote,vencimento,quantidade,valor,data_cadastro) values('Carne Seca','Carnes e Frios','W4543GH','2022-10-20','5','50.00','2022-10-18 15:06:40');
+insert into Produtos (produto,categoria,lote,vencimento,quantidade,valor,data_cadastro) values('Tampico 250ml','Bebidas','VN25B7','2020-03-09','10','2.50','2023-04-10 18:06:28');
+insert into Produtos (produto,categoria,lote,vencimento,quantidade,valor,data_cadastro) values('Maionese Hellmann´s','Molhos','9NV537TVCV3F','2023-10-15','20','8.50','2023-04-08 12:06:28');
+insert into Produtos (produto,categoria,lote,vencimento,quantidade,valor,data_cadastro) values('Xesperito Flocos 1L','Sorveteria','24CBV7','2025-12-27','30','12.00','2020-04-08 15:06:28');
 
 select *from Produtos order by vencimento asc;
 
@@ -99,4 +99,20 @@ CREATE TABLE `tbl_usuario` (
     `ds_email` varchar(80),
     `ds_senha` varchar(15),
     `ds_status` boolean not null
+);
+create table gerir_estoque(
+	id_dado double primary key auto_increment not null,
+    id_produto double not null,
+    foreign key(id_produto) references Produtos(id_produto) on delete cascade,
+	produto varchar(50) not null,
+    categoria varchar(15) not null,
+    lote varchar(12) not null,
+    vencimento date not null,
+    qtd_estoque integer not null,
+    valor varchar(15) not null,
+    data_cadastro datetime not null,
+    operacao varchar(20) not null,
+    entrada double not null,
+	saida double not null,
+    vl_total double
 );

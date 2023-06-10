@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import javax.swing.JOptionPane;
 
 /**
@@ -39,7 +40,56 @@ public class EstoqueDAO {
             pstm.setString(7, estDTO.getData_cadastro());
             pstm.execute();
             pstm.close();
-
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(null, erro);
+        }
+        
+    }
+    public ResultSet pgID(EstoqueDTO estDTO) {
+        conecte = new Conexao().Conectar();
+        String datas = estDTO.getData_cadastro();
+        try {
+            String sql = "select id_produto from Produtos where data_cadastro='" + datas + "'";
+            pstm = conecte.prepareStatement(sql);
+            rs = pstm.executeQuery();
+            return rs;
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(null, erro);
+            return null;
+        }
+    }
+    public void gestao_estq(EstoqueDTO estDTO) {
+        conecte = new Conexao().Conectar();
+        try {
+            String sql= "insert into gerir_estoque(id_produto,produto,categoria,lote,vencimento,qtd_estoque,valor,data_cadastro,operacao,entrada,saida,vl_total) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+            pstm = conecte.prepareStatement(sql);
+            pstm.setDouble(1, estDTO.getId_p_tbl());
+            pstm.setString(2, estDTO.getProduto());
+            pstm.setString(3, estDTO.getCategoria());
+            pstm.setString(4, estDTO.getLote());
+            pstm.setString(5, estDTO.getVencimento());
+            pstm.setInt(6, estDTO.getQuantidade());
+            pstm.setString(7, estDTO.getPreco());
+            pstm.setString(8, estDTO.getData_cadastro());
+            pstm.setString(9, "entrada");
+            pstm.setInt(10,estDTO.getQuantidade());
+            pstm.setDouble(11, 0);
+            double mult=Double.parseDouble(estDTO.getPreco());
+            mult=(mult*estDTO.getQuantidade());
+            String vl = String.valueOf(mult);
+            StringTokenizer casasN = new StringTokenizer(vl);
+            String inteiro = casasN.nextToken(".");
+            String decimal = casasN.nextToken(".");
+            if (decimal.length() < 2) {
+                decimal = decimal + "0";
+            } else {
+                decimal = decimal.substring(0, 2);
+            }
+            vl = inteiro + "." + decimal;
+            mult = Double.parseDouble(vl);
+            pstm.setDouble(12, mult);
+            pstm.execute();
+            pstm.close();
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, erro);
         }
@@ -75,7 +125,7 @@ public class EstoqueDAO {
                 pesqDTO.setCategoria(rs.getString("categoria"));
                 pesqDTO.setLote(rs.getString("lote"));
                 pesqDTO.setQuantidade(rs.getInt("quantidade"));
-                pesqDTO.setPreco(rs.getString("valor"));
+                pesqDTO.setPreco("R$"+rs.getString("valor"));
 
                 String vmt = rs.getString("vencimento");
                 String formVmt = vmt.replace("-", "");
@@ -125,6 +175,49 @@ public class EstoqueDAO {
             pstm.execute();
             pstm.close();
 
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(null, erro);
+        }
+    }
+    public void oprEstoque(EstoqueDTO estoqueDTO) {
+        conecte = new Conexao().Conectar();
+        try {
+            String sql= "insert into gerir_estoque(id_produto,produto,categoria,lote,vencimento,qtd_estoque,valor,data_cadastro,operacao,entrada,saida,vl_total) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+            pstm = conecte.prepareStatement(sql);
+            pstm.setDouble(1, estoqueDTO.getId_p_tbl());
+            pstm.setString(2, estoqueDTO.getProduto());
+            pstm.setString(3, estoqueDTO.getCategoria());
+            pstm.setString(4, estoqueDTO.getLote());
+            pstm.setString(5, estoqueDTO.getVencimento());
+            pstm.setInt(6, estoqueDTO.getQuantidade());
+            pstm.setString(7, estoqueDTO.getPreco());
+            pstm.setString(8, estoqueDTO.getData_cadastro());
+            pstm.setString(9, estoqueDTO.getOperacao());
+            if(estoqueDTO.getOperacao().equals("entrada")){
+                pstm.setString(10,estoqueDTO.getValor());
+                pstm.setDouble(11, 0);
+            }else{
+                pstm.setInt(10,0);
+                pstm.setString(11, estoqueDTO.getValor());
+            }
+            
+            
+            double mult=Double.parseDouble(estoqueDTO.getPreco());
+            mult=(mult*estoqueDTO.getQuantidade());
+            String vl = String.valueOf(mult);
+            StringTokenizer casasN = new StringTokenizer(vl);
+            String inteiro = casasN.nextToken(".");
+            String decimal = casasN.nextToken(".");
+            if (decimal.length() < 2) {
+                decimal = decimal + "0";
+            } else {
+                decimal = decimal.substring(0, 2);
+            }
+            vl = inteiro + "." + decimal;
+            mult = Double.parseDouble(vl);
+            pstm.setDouble(12, mult);
+            pstm.execute();
+            pstm.close();
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, erro);
         }

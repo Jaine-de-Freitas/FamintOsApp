@@ -69,7 +69,7 @@ public class Menu extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("_______________________");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(160, 140, 320, 28);
+        jLabel6.setBounds(160, 140, 320, 29);
 
         btnGerenciar.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btnGerenciar.setText("GERENCIAR ESTOQUE");
@@ -80,7 +80,7 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnGerenciar);
-        btnGerenciar.setBounds(100, 260, 410, 27);
+        btnGerenciar.setBounds(100, 260, 410, 29);
 
         btnCadastrar.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btnCadastrar.setText("CADASTRAR FUNCIONÁRIO");
@@ -91,10 +91,10 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnCadastrar);
-        btnCadastrar.setBounds(100, 210, 410, 27);
+        btnCadastrar.setBounds(100, 210, 410, 29);
 
         btnControle.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        btnControle.setText("CONTROLE DE VENDAS");
+        btnControle.setText("RELATÓRIOS");
         btnControle.setEnabled(false);
         btnControle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -102,7 +102,7 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnControle);
-        btnControle.setBounds(100, 310, 410, 27);
+        btnControle.setBounds(100, 310, 410, 29);
 
         jButton1.setText("LOGOUT");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -129,7 +129,7 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnPratos);
-        btnPratos.setBounds(100, 360, 410, 27);
+        btnPratos.setBounds(100, 360, 410, 29);
 
         btnPedidos.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btnPedidos.setText("VER PEDIDOS PENDENTES");
@@ -140,7 +140,7 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnPedidos);
-        btnPedidos.setBounds(100, 410, 410, 27);
+        btnPedidos.setBounds(100, 410, 410, 29);
 
         jLabel7.setBackground(new java.awt.Color(255, 255, 255));
         jLabel7.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
@@ -152,7 +152,7 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(200, 130, 220, 28);
+        jLabel7.setBounds(200, 130, 220, 29);
 
         jButton2.setText("(X) SAIR");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -192,7 +192,11 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnControleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnControleActionPerformed
-        // TODO add your handling code here:
+        Relatorios rlt = new Relatorios();
+        String Nome = txtUsuario.getText();
+        rlt.txtUser.setText(Nome);
+        dispose();
+        rlt.setVisible(true);
     }//GEN-LAST:event_btnControleActionPerformed
 
     private void btnPratosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPratosActionPerformed

@@ -46,6 +46,9 @@ public class Estoque extends javax.swing.JFrame {
         adicionar.setEnabled(true);
         alterar.setEnabled(false);
         excluir.setEnabled(false);
+        qtdOPR.setVisible(false);
+        novaQTD.setVisible(false);
+        txtQuantidade.setSize(220, 30);
         FiltrarEstoque();
     }
 
@@ -88,6 +91,8 @@ public class Estoque extends javax.swing.JFrame {
         txtValor = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        qtdOPR = new javax.swing.JComboBox<>();
+        novaQTD = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gerenciamento de Estoque");
@@ -107,36 +112,37 @@ public class Estoque extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Quantidade");
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(280, 450, 240, 28);
+        jLabel3.setBounds(280, 450, 240, 29);
 
         jLabel4.setBackground(new java.awt.Color(255, 255, 255));
         jLabel4.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Vencimento");
         jPanel1.add(jLabel4);
-        jLabel4.setBounds(280, 230, 220, 28);
+        jLabel4.setBounds(280, 230, 220, 29);
 
         jLabel5.setBackground(new java.awt.Color(255, 255, 255));
         jLabel5.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Valor (und)");
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(280, 340, 240, 28);
+        jLabel5.setBounds(280, 340, 240, 29);
 
+        txtQuantidade.setDisabledTextColor(new java.awt.Color(204, 204, 204));
         txtQuantidade.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtQuantidadeActionPerformed(evt);
             }
         });
         jPanel1.add(txtQuantidade);
-        txtQuantidade.setBounds(280, 490, 220, 30);
+        txtQuantidade.setBounds(280, 490, 110, 30);
 
         jLabel6.setBackground(new java.awt.Color(255, 255, 255));
         jLabel6.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Produto");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(40, 230, 190, 28);
+        jLabel6.setBounds(40, 230, 190, 29);
 
         txtNomeProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -151,10 +157,10 @@ public class Estoque extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Lote");
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(40, 340, 190, 28);
+        jLabel7.setBounds(40, 340, 190, 29);
 
         txtCategoria.setEditable(false);
-        txtCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecionar", "Secos", "Carnes e Frios", "Bebidas", "Molhos", "Sorveteria" }));
+        txtCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecionar", "Secos", "Carnes e Frios", "Bebidas", "Molhos", "Sorveteria", "Hortifruti" }));
         txtCategoria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCategoriaActionPerformed(evt);
@@ -168,14 +174,14 @@ public class Estoque extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Categoria");
         jPanel1.add(jLabel8);
-        jLabel8.setBounds(40, 450, 190, 28);
+        jLabel8.setBounds(40, 450, 190, 29);
 
         adicionar.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         adicionar.setText("ADICIONAR");
         adicionar.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-            }
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
                 adicionarAncestorRemoved(evt);
@@ -187,7 +193,7 @@ public class Estoque extends javax.swing.JFrame {
             }
         });
         jPanel1.add(adicionar);
-        adicionar.setBounds(240, 540, 130, 27);
+        adicionar.setBounds(240, 540, 130, 29);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
@@ -207,7 +213,7 @@ public class Estoque extends javax.swing.JFrame {
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel10.setText("_________________________________");
         jPanel1.add(jLabel10);
-        jLabel10.setBounds(0, 160, 550, 28);
+        jLabel10.setBounds(0, 160, 550, 29);
 
         jLabel11.setBackground(new java.awt.Color(255, 255, 255));
         jLabel11.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
@@ -215,14 +221,14 @@ public class Estoque extends javax.swing.JFrame {
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel11.setText("ADICIONAR AO ESTOQUE");
         jPanel1.add(jLabel11);
-        jLabel11.setBounds(0, 150, 550, 28);
+        jLabel11.setBounds(0, 150, 550, 29);
 
         excluir.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         excluir.setText("EXCLUIR CADASTROS");
         excluir.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-            }
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
                 excluirAncestorRemoved(evt);
@@ -234,14 +240,14 @@ public class Estoque extends javax.swing.JFrame {
             }
         });
         jPanel1.add(excluir);
-        excluir.setBounds(1070, 540, 210, 27);
+        excluir.setBounds(1070, 540, 210, 29);
 
         alterar.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         alterar.setText("ALTERAR ");
         alterar.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-            }
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
                 alterarAncestorRemoved(evt);
@@ -253,7 +259,7 @@ public class Estoque extends javax.swing.JFrame {
             }
         });
         jPanel1.add(alterar);
-        alterar.setBounds(380, 540, 130, 27);
+        alterar.setBounds(380, 540, 130, 29);
 
         permitirA.setBackground(new java.awt.Color(255, 0, 0));
         permitirA.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -277,7 +283,7 @@ public class Estoque extends javax.swing.JFrame {
             }
         });
         jPanel1.add(permitirE);
-        permitirE.setBounds(810, 540, 220, 22);
+        permitirE.setBounds(810, 540, 220, 25);
 
         Opcoes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Não filtrar", "Vencimento", "Quantidade", "Produto", "Categoria", "Lote" }));
         Opcoes.addItemListener(new java.awt.event.ItemListener() {
@@ -395,6 +401,12 @@ public class Estoque extends javax.swing.JFrame {
         jPanel1.add(jButton3);
         jButton3.setBounds(1220, 10, 80, 23);
 
+        qtdOPR.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecionar", "+ (Entrada)", "- (Saida)" }));
+        jPanel1.add(qtdOPR);
+        qtdOPR.setBounds(390, 490, 110, 30);
+        jPanel1.add(novaQTD);
+        novaQTD.setBounds(280, 490, 110, 30);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -452,6 +464,11 @@ public class Estoque extends javax.swing.JFrame {
             excluir.setEnabled(false);
             alterar.setEnabled(true);
             tabelaProdutos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            qtdOPR.setVisible(true);
+            novaQTD.setVisible(true);
+            txtQuantidade.setVisible(false);
+            txtQuantidade.setSize(110, 30);
+            txtQuantidade.setEditable(false);
             selecionarLinha();
             LimparCampos();
         } else if (estado == false) {
@@ -459,6 +476,11 @@ public class Estoque extends javax.swing.JFrame {
             excluir.setEnabled(false);
             alterar.setEnabled(false);
             adicionar.setEnabled(true);
+            qtdOPR.setVisible(false);
+            novaQTD.setVisible(false);
+            txtQuantidade.setVisible(true);
+            txtQuantidade.setSize(220, 30);
+            txtQuantidade.setEditable(true);
             selecionarLinha();
             LimparCampos();
         }
@@ -530,8 +552,8 @@ public class Estoque extends javax.swing.JFrame {
     }//GEN-LAST:event_tabelaProdutosMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String Nome=txtUser.getText();
-        Menu mn=new Menu();
+        String Nome = txtUser.getText();
+        Menu mn = new Menu();
         mn.txtUsuario.setText(Nome);
         mn.setVisible(true);
         mn.chamar();
@@ -600,9 +622,11 @@ public class Estoque extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField novaQTD;
     private javax.swing.JRadioButton permitirA;
     private javax.swing.JRadioButton permitirE;
     private javax.swing.JButton pesquisar;
+    private javax.swing.JComboBox<String> qtdOPR;
     public javax.swing.JTable tabelaProdutos;
     private javax.swing.JComboBox<String> txtCategoria;
     private javax.swing.JTextField txtLote;
@@ -624,7 +648,7 @@ public class Estoque extends javax.swing.JFrame {
         quantidade = txtQuantidade.getText();
         int teste = 1;
 
-        String prc = preco.replaceAll("[0-9R$,.]", "");
+        String prc = preco.replaceAll("[0-9.]", "");
         String qtd = quantidade.replaceAll("[0-9]", "");
 
         if ((produto.isEmpty()) || (categoria.isEmpty()) || (vencimento.isEmpty()) || (lote.isEmpty() || (preco.isEmpty()) || (quantidade.isEmpty()))) {
@@ -664,14 +688,10 @@ public class Estoque extends javax.swing.JFrame {
                 }
                 if (teste == 1) {
                     String pgm;
-                    if (preco.replaceAll("[0-9]", "").length() < 0) {
+                    if (preco.replaceAll("[0-9].", "").length() < 0) {
                         JOptionPane.showMessageDialog(null, "Campo valor inválido!");
                     } else {
-                        if (preco.length() > 2 && preco.substring(0, 2).equals("R$")) {
-                            pgm = preco;
-                        } else {
-                            pgm = "R$" + preco;
-                        }
+                        pgm = preco;
                         Date dataHoraAtual = new Date();
                         String data2 = new SimpleDateFormat("yyyy-MM-dd").format(dataHoraAtual);
                         String hora = new SimpleDateFormat("HH:mm:ss").format(dataHoraAtual);
@@ -690,6 +710,15 @@ public class Estoque extends javax.swing.JFrame {
                         estDTO.setData_cadastro(dBanco);
 
                         estDAO.adicionarProduto(estDTO);
+                        ResultSet rsuserdao2 = estDAO.pgID(estDTO);
+                        try {
+                            if (rsuserdao2.next()) {
+                                estDTO.setId_p_tbl(rsuserdao2.getDouble(1));
+                            }
+                        } catch (SQLException erro) {
+                            JOptionPane.showMessageDialog(null, erro);
+                        }
+                        estDAO.gestao_estq(estDTO);
 
                         JOptionPane.showMessageDialog(null, "Produto adicionado com sucesso!");
 
@@ -703,13 +732,15 @@ public class Estoque extends javax.swing.JFrame {
     }
 
     private void Alterar() {
-        String produto, categoria, lote, vencimento, preco, quantidade;
+        String produto, categoria, lote, vencimento, preco, quantidade,operacao;
+        int qtd_tbl;
         produto = txtNomeProduto.getText();
         categoria = txtCategoria.getSelectedItem().toString();
+        operacao = qtdOPR.getSelectedItem().toString();
         lote = txtLote.getText().toUpperCase();
         vencimento = txtVencimento.getText();
         preco = txtValor.getText();
-        quantidade = txtQuantidade.getText();
+        quantidade = novaQTD.getText();
         int teste = 1;
 
         String prc = preco.replaceAll("[0-9R$,.]", "");
@@ -719,12 +750,21 @@ public class Estoque extends javax.swing.JFrame {
         if (linha != -1) {
             String qtdNaLinha = String.valueOf(tabelaProdutos.getValueAt(linha, 5));
             Object ids = tabelaProdutos.getValueAt(linha, 0);
+            qtd_tbl=(int) tabelaProdutos.getValueAt(linha, 5);
             double recId = (double) ids;
 
-            if ((produto.isEmpty()) || (categoria.isEmpty()) || (vencimento.isEmpty()) || (lote.isEmpty() || (preco.isEmpty()) || (quantidade.isEmpty()))) {
+            if ((produto.isEmpty()) || (categoria.isEmpty()) || (vencimento.isEmpty()) || (lote.isEmpty()) || (preco.isEmpty()) || (quantidade.isEmpty())) {
                 JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios!");
-            } else if (lote.length() < 4 || lote.length() > 12) {
+            }else if(txtCategoria.getSelectedItem().toString().equals("Selecionar")){
+                JOptionPane.showMessageDialog(null, "Selecione uma categoria!");
+            }else if(qtdOPR.getSelectedItem().toString().equals("Selecionar")){
+                JOptionPane.showMessageDialog(null, "Indique entrada ou saida do produto alterado!");
+            }else if (lote.length() < 4 || lote.length() > 12) {
                 JOptionPane.showMessageDialog(null, "Lote digitado é inválido!");
+            }else if(qtd.length()!=0){
+                JOptionPane.showMessageDialog(null, "Campo quantidade contém valor inválido!");
+            }else if ((Integer.parseInt(quantidade))>qtd_tbl & qtdOPR.getSelectedIndex()==2) {
+                JOptionPane.showMessageDialog(null, "Operação de saida inválida!");
             } else {
                 String confirmar = vencimento.replaceAll("[^0-9]+", "");
                 String dia = confirmar.substring(0, 2);
@@ -760,27 +800,36 @@ public class Estoque extends javax.swing.JFrame {
                     if (preco.replaceAll("[0-9]", "").length() < 0) {
                         JOptionPane.showMessageDialog(null, "Campo valor inválido!");
                     } else {
-                        if (preco.length() > 2 && preco.substring(0, 2).equals("R$")) {
-                            pgm = preco;
-                        } else {
-                            pgm = "R$" + preco;
-                        }
+                        pgm=preco;
                         Date dataHoraAtual = new Date();
                         String data2 = new SimpleDateFormat("yyyy-MM-dd").format(dataHoraAtual);
                         String hora = new SimpleDateFormat("HH:mm:ss").format(dataHoraAtual);
 
                         String dBanco = data2 + " " + hora;
-
+                        int n;
+                        if(qtdOPR.getSelectedIndex()==1){
+                            n=qtd_tbl+(Integer.parseInt(quantidade));
+                        }else{
+                            n=qtd_tbl-(Integer.parseInt(quantidade));
+                        }
+                        if(qtdOPR.getSelectedIndex()==1){
+                            estoqueDTO.setOperacao("entrada");
+                        }else{
+                            estoqueDTO.setOperacao("saida");
+                        }
                         estoqueDTO.setCategoria(categoria);
                         estoqueDTO.setLote(lote);
                         estoqueDTO.setPreco(pgm);
                         estoqueDTO.setProduto(produto);
-                        estoqueDTO.setQuantidade(Integer.parseInt(quantidade));
+                        estoqueDTO.setValor(quantidade);
+                        estoqueDTO.setQuantidade(n);
                         estoqueDTO.setVencimento(vencFormt);
                         estoqueDTO.setData_cadastro(dBanco);
                         estoqueDTO.setId_produto(recId);
+                        estoqueDTO.setId_p_tbl((double) ids);
 
                         estoqueDAO.alterarProduto(estoqueDTO);
+                        estoqueDAO.oprEstoque(estoqueDTO);
 
                         JOptionPane.showMessageDialog(null, "Produto alterado com sucesso!");
 
@@ -920,7 +969,9 @@ public class Estoque extends javax.swing.JFrame {
         txtVencimento.setText(null);
         txtValor.setText(null);
         txtQuantidade.setText(null);
+        novaQTD.setText(null);
         txtCategoria.setSelectedIndex(0);
+        qtdOPR.setSelectedIndex(0);
     }
 
     private void MandarLinha() {
@@ -932,13 +983,14 @@ public class Estoque extends javax.swing.JFrame {
         Object lote = tabelaProdutos.getValueAt(linha, 3);
         Object vencimento = tabelaProdutos.getValueAt(linha, 4);
         int quantidade = (int) tabelaProdutos.getValueAt(linha, 5);
-        Object preco = tabelaProdutos.getValueAt(linha, 6);
+        String preco = (String) tabelaProdutos.getValueAt(linha, 6);
+        preco=preco.replace("R$","");
 
         txtNomeProduto.setText((String) produto);
         txtLote.setText((String) lote);
         txtVencimento.setText((String) vencimento);
         txtQuantidade.setText(String.valueOf(quantidade));
-        txtValor.setText((String) preco);
+        txtValor.setText(preco);
 
         if (categoria.equals("Secos")) {
             txtCategoria.setSelectedIndex(1);
@@ -948,8 +1000,10 @@ public class Estoque extends javax.swing.JFrame {
             txtCategoria.setSelectedIndex(3);
         } else if (categoria.equals("Molhos")) {
             txtCategoria.setSelectedIndex(4);
-        } else {
+        } else if(categoria.equals("Sorveteria")){
             txtCategoria.setSelectedIndex(5);
+        }else{
+            txtCategoria.setSelectedIndex(6);
         }
 
     }

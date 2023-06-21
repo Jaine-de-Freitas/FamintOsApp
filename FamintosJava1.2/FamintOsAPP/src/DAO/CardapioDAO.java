@@ -63,7 +63,7 @@ public class CardapioDAO {
             while (rs.next()) {
                 CardapioDTO cdpoDTO = new CardapioDTO();
                 cdpoDTO.setCd_comida(rs.getInt("cd_comida"));
-                cdpoDTO.setImg_comida("C:\\xampp3\\htdocs\\FamintosWeb\\produtos_img\\"+rs.getString("img_comida")+".jpg");
+                cdpoDTO.setImg_comida("C:\\xampp\\htdocs\\FamintosWeb\\produtos_img\\"+rs.getString("img_comida")+".jpg");
                 cdpoDTO.setNm_comida(rs.getString("nm_comida"));
                 cdpoDTO.setNm_categoria(rs.getString("nm_categoria"));
                 cdpoDTO.setQt_estoque(rs.getInt("qt_estoque"));

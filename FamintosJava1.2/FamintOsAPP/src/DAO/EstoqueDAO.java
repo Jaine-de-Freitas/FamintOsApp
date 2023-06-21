@@ -100,7 +100,7 @@ public class EstoqueDAO {
         String pesquisa = estqDTO.getTxtPesq();
         String sql = "";
         conecte = new Conexao().Conectar();
-        try {
+        try { 
             if (opcao.equals("Não filtrar")) {
                 sql = "select *from Produtos order by data_cadastro desc";
             } else if (opcao.equals("Vencimento")) {

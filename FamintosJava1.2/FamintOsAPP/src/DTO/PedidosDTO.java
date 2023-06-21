@@ -9,7 +9,8 @@ package DTO;
  * @author user3
  */
 public class PedidosDTO {
-    private String cd_venda,no_Ticket,nome_cliente,cd_cliente,cd_comida,qt_comida,vl_item,vl_total_item,dt_venda,cd_mesa,statusC,busca,busca2,nm_comida;
+    private String cd_venda,no_Ticket,nome_cliente,cd_cliente,cd_comida,qt_comida,vl_item,vl_total_item,dt_venda,cd_mesa,statusC,busca,busca2,nm_comida,cd,op,vl_preco,rua,bairro,numero,cidade,estado,opcao,cdg_garcom;
+    private int nums,nconsul;
 
     public String getCd_venda() {
         return cd_venda;
@@ -139,6 +140,156 @@ public class PedidosDTO {
      */
     public void setNm_comida(String nm_comida) {
         this.nm_comida = nm_comida;
+    }
+
+    public String getCd() {
+        return cd;
+    }
+
+    public void setCd(String cd) {
+        this.cd = cd;
+    }
+
+    public String getOp() {
+        return op;
+    }
+
+    public void setOp(String op) {
+        this.op = op;
+    }
+
+    public int getNums() {
+        return nums;
+    }
+
+    public void setNums(int nums) {
+        this.nums = nums;
+    }
+
+    /**
+     * @return the vl_preco
+     */
+    public String getVl_preco() {
+        return vl_preco;
+    }
+
+    /**
+     * @param vl_preco the vl_preco to set
+     */
+    public void setVl_preco(String vl_preco) {
+        this.vl_preco = vl_preco;
+    }
+
+    /**
+     * @return the rua
+     */
+    public String getRua() {
+        return rua;
+    }
+
+    /**
+     * @param rua the rua to set
+     */
+    public void setRua(String rua) {
+        this.rua = rua;
+    }
+
+    /**
+     * @return the bairro
+     */
+    public String getBairro() {
+        return bairro;
+    }
+
+    /**
+     * @param bairro the bairro to set
+     */
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    /**
+     * @return the numero
+     */
+    public String getNumero() {
+        return numero;
+    }
+
+    /**
+     * @param numero the numero to set
+     */
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    /**
+     * @return the cidade
+     */
+    public String getCidade() {
+        return cidade;
+    }
+
+    /**
+     * @param cidade the cidade to set
+     */
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    /**
+     * @return the estado
+     */
+    public String getEstado() {
+        return estado;
+    }
+
+    /**
+     * @param estado the estado to set
+     */
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    /**
+     * @return the opcao
+     */
+    public String getOpcao() {
+        return opcao;
+    }
+
+    /**
+     * @param opcao the opcao to set
+     */
+    public void setOpcao(String opcao) {
+        this.opcao = opcao;
+    }
+
+    /**
+     * @return the nconsul
+     */
+    public int getNconsul() {
+        return nconsul;
+    }
+
+    /**
+     * @param nconsul the nconsul to set
+     */
+    public void setNconsul(int nconsul) {
+        this.nconsul = nconsul;
+    }
+
+    /**
+     * @return the cdg_garcom
+     */
+    public String getCdg_garcom() {
+        return cdg_garcom;
+    }
+
+    /**
+     * @param cdg_garcom the cdg_garcom to set
+     */
+    public void setCdg_garcom(String cdg_garcom) {
+        this.cdg_garcom = cdg_garcom;
     }
 
     /**

@@ -687,7 +687,7 @@ public class PratosnCardapio extends javax.swing.JFrame {
                         origem = new FileInputStream(img_comida);
                         System.out.println(origem);
                         try {
-                            destino = new FileOutputStream("C:\\xampp3\\htdocs\\FamintosWeb\\produtos_img\\" + origem + ".jpg");
+                            destino = new FileOutputStream("C:\\xampp\\htdocs\\FamintosWeb\\produtos_img\\" + origem + ".jpg");
                             fcOrigem = origem.getChannel();
                             fcDestino = destino.getChannel();
                             try {
@@ -699,8 +699,8 @@ public class PratosnCardapio extends javax.swing.JFrame {
                                     cdpDTO.setImg_comida(destinoMod);
                                     origem.close();
                                     destino.close();
-                                    File arquivo = new File("C:\\xampp3\\htdocs\\FamintosWeb\\produtos_img\\" + origem + ".jpg");
-                                    arquivo.renameTo(new File("C:\\xampp3\\htdocs\\FamintosWeb\\produtos_img\\" + destinoMod + ".jpg"));
+                                    File arquivo = new File("C:\\xampp\\htdocs\\FamintosWeb\\produtos_img\\" + origem + ".jpg");
+                                    arquivo.renameTo(new File("C:\\xampp\\htdocs\\FamintosWeb\\produtos_img\\" + destinoMod + ".jpg"));
                                     cdpDAO.adicionarProduto(cdpDTO);
                                     JOptionPane.showMessageDialog(null, "Produto adicionado com sucesso!");
                                     LimparCampos();
@@ -863,8 +863,8 @@ public class PratosnCardapio extends javax.swing.JFrame {
         try {
             if (rsS.next()) {
                 String imgs = rsS.getString("img_comida");
-                linkft.setText("C:\\xampp3\\htdocs\\FamintosWeb\\produtos_img\\" + imgs + ".jpg");
-                String icone1 = "C:\\xampp3\\htdocs\\FamintosWeb\\produtos_img\\" + imgs + ".jpg";
+                linkft.setText("C:\\xampp\\htdocs\\FamintosWeb\\produtos_img\\" + imgs + ".jpg");
+                String icone1 = "C:\\xampp\\htdocs\\FamintosWeb\\produtos_img\\" + imgs + ".jpg";
                 ImageIcon icone = new ImageIcon(icone1);
                 Image imagem = icone.getImage();
                 Image newimg = imagem.getScaledInstance(220, 220, java.awt.Image.SCALE_SMOOTH);
@@ -894,14 +894,14 @@ public class PratosnCardapio extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios!");
             } else {
                 int linha2 = tabelaProdutos.getSelectedRow();
-                String teste = "C:\\xampp3\\htdocs\\FamintosWeb\\produtos_img\\" + tabelaProdutos.getValueAt(linha2, 1) + ".jpg";
+                String teste = "C:\\xampp\\htdocs\\FamintosWeb\\produtos_img\\" + tabelaProdutos.getValueAt(linha2, 1) + ".jpg";
                 String vls = (String) tabelaProdutos.getValueAt(linha, 5);
                 String vl = (String) vls;
                 vl = vl.replaceAll("[R$]", "");
                 vl = vl.replaceAll("\\.", ",");
                 String comp = String.valueOf(tabelaProdutos.getValueAt(linha, 4));
 
-                if (tabelaProdutos.getValueAt(linha, 2).equals(nm_comida) & tabelaProdutos.getValueAt(linha, 3).equals(cd_categoria) & vl.equals(vl_preco) & comp.equals(qtestoque) & teste.equals("C:\\xampp3\\htdocs\\FamintosWeb\\produtos_img\\" + img_comida + ".jpg")) {
+                if (tabelaProdutos.getValueAt(linha, 2).equals(nm_comida) & tabelaProdutos.getValueAt(linha, 3).equals(cd_categoria) & vl.equals(vl_preco) & comp.equals(qtestoque) & teste.equals("C:\\xampp\\htdocs\\FamintosWeb\\produtos_img\\" + img_comida + ".jpg")) {
                     JOptionPane.showMessageDialog(null, "Nenhuma modificação foi efetuada!");
                 } else if (cd_categoria.equals("Selecionar")) {
                     JOptionPane.showMessageDialog(null, "Selecione uma categoria!");
@@ -935,8 +935,8 @@ public class PratosnCardapio extends javax.swing.JFrame {
                         FileChannel fcOrigem;
                         FileChannel fcDestino;
 
-                        if (teste.equals("C:\\xampp3\\htdocs\\FamintosWeb\\produtos_img\\" + img_comida + ".jpg")) {
-                            String destinoMod1 = img_comida.replace("C:\\xampp3\\htdocs\\FamintosWeb\\produtos_img\\", "");
+                        if (teste.equals("C:\\xampp\\htdocs\\FamintosWeb\\produtos_img\\" + img_comida + ".jpg")) {
+                            String destinoMod1 = img_comida.replace("C:\\xampp\\htdocs\\FamintosWeb\\produtos_img\\", "");
                             String destinoMod2 = destinoMod1.replace(".jpg", "");
                             cdpDTO.setImg_comida(destinoMod2);
                             cdpDTO.setCd_comida(ids);
@@ -949,7 +949,7 @@ public class PratosnCardapio extends javax.swing.JFrame {
                             try {
                                 origem = new FileInputStream(img_comida);
                                 try {
-                                    destino = new FileOutputStream("C:\\xampp3\\htdocs\\FamintosWeb\\produtos_img\\" + origem + ".jpg");//onde irá ficar a copia do aquivo
+                                    destino = new FileOutputStream("C:\\xampp\\htdocs\\FamintosWeb\\produtos_img\\" + origem + ".jpg");//onde irá ficar a copia do aquivo
                                     fcOrigem = origem.getChannel();
                                     fcDestino = destino.getChannel();
                                     try {
@@ -962,8 +962,8 @@ public class PratosnCardapio extends javax.swing.JFrame {
                                             cdpDTO.setCd_comida(ids);
                                             origem.close();
                                             destino.close();
-                                            File arquivo = new File("C:\\xampp3\\htdocs\\FamintosWeb\\produtos_img\\" + origem + ".jpg");
-                                            arquivo.renameTo(new File("C:\\xampp3\\htdocs\\FamintosWeb\\produtos_img\\" + destinoMod + ".jpg"));
+                                            File arquivo = new File("C:\\xampp\\htdocs\\FamintosWeb\\produtos_img\\" + origem + ".jpg");
+                                            arquivo.renameTo(new File("C:\\xampp\\htdocs\\FamintosWeb\\produtos_img\\" + destinoMod + ".jpg"));
                                             cdpDAO.altereProduto(cdpDTO);
                                             JOptionPane.showMessageDialog(null, "Produto alterado com sucesso!");
                                             LimparCampos();

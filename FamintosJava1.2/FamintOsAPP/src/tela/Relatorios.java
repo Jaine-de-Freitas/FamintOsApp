@@ -5,7 +5,37 @@
  */
 package tela;
 
+import DAO.RelatoriosDAO;
+import DTO.RelatoriosDTO;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.BaseColor;
 import java.awt.Color;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.JOptionPane;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import static com.itextpdf.text.PageSize.A3;
+import static com.itextpdf.text.PageSize.A4;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.Paragraph;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.print.DocPrintJob;
 
 /**
  *
@@ -18,6 +48,8 @@ public class Relatorios extends javax.swing.JFrame {
      */
     public Relatorios() {
         initComponents();
+        txtSemana.setVisible(false);
+        txtDia.setVisible(true);
     }
 
     /**
@@ -37,23 +69,31 @@ public class Relatorios extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         linkft = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        txtCategoria = new javax.swing.JComboBox<>();
+        txtTipo = new javax.swing.JComboBox<>();
         txtMes = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        lbl = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         txtPeriodo = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
+        txtSemana = new javax.swing.JComboBox<>();
         jLabel12 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        txtDado = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
+        txtDia = new javax.swing.JTextField();
+        txtAno = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        lbltxtDia = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        lbltxtMes = new javax.swing.JLabel();
+        lbltxtAno = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Relatórios");
 
         jPanel1.setBackground(new java.awt.Color(255, 0, 0));
         jPanel1.setLayout(null);
@@ -104,15 +144,25 @@ public class Relatorios extends javax.swing.JFrame {
         jPanel1.add(jLabel6);
         jLabel6.setBounds(360, 290, 260, 29);
 
-        txtCategoria.setEditable(false);
-        txtCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECIONAR", "VENDAS", "ESTOQUE" }));
-        txtCategoria.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCategoriaActionPerformed(evt);
+        txtTipo.setEditable(false);
+        txtTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECIONAR", "VENDAS", "ESTOQUE" }));
+        txtTipo.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                txtTipoItemStateChanged(evt);
             }
         });
-        jPanel1.add(txtCategoria);
-        txtCategoria.setBounds(360, 210, 270, 30);
+        txtTipo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtTipoMouseClicked(evt);
+            }
+        });
+        txtTipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTipoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(txtTipo);
+        txtTipo.setBounds(360, 210, 270, 30);
 
         txtMes.setEditable(false);
         txtMes.setText(" JANEIRO");
@@ -137,23 +187,20 @@ public class Relatorios extends javax.swing.JFrame {
                 jButton2MouseClicked(evt);
             }
         });
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2);
         jButton2.setBounds(700, 330, 40, 30);
 
-        jLabel8.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel8.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Dia de Referência");
-        jPanel1.add(jLabel8);
-        jLabel8.setBounds(700, 170, 230, 29);
-
-        try {
-            jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        jPanel1.add(jFormattedTextField1);
-        jFormattedTextField1.setBounds(700, 470, 270, 30);
+        lbl.setBackground(new java.awt.Color(255, 255, 255));
+        lbl.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        lbl.setForeground(new java.awt.Color(255, 255, 255));
+        lbl.setText("Dia de Referência");
+        jPanel1.add(lbl);
+        lbl.setBounds(700, 170, 340, 29);
 
         jLabel10.setBackground(new java.awt.Color(255, 255, 255));
         jLabel10.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
@@ -163,6 +210,16 @@ public class Relatorios extends javax.swing.JFrame {
         jLabel10.setBounds(700, 430, 230, 29);
 
         txtPeriodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECIONAR", "DIÁRIO", "SEMANAL", "MENSAL", "ANUAL" }));
+        txtPeriodo.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                txtPeriodoItemStateChanged(evt);
+            }
+        });
+        txtPeriodo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtPeriodoMouseClicked(evt);
+            }
+        });
         txtPeriodo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPeriodoActionPerformed(evt);
@@ -177,8 +234,10 @@ public class Relatorios extends javax.swing.JFrame {
         jLabel11.setText("Mês de Referência");
         jPanel1.add(jLabel11);
         jLabel11.setBounds(700, 290, 230, 29);
-        jPanel1.add(jFormattedTextField2);
-        jFormattedTextField2.setBounds(700, 210, 270, 30);
+
+        txtSemana.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECIONAR", "SEMANA 1", "SEMANA 2", "SEMANA 3", "SEMANA 4" }));
+        jPanel1.add(txtSemana);
+        txtSemana.setBounds(700, 210, 270, 30);
 
         jLabel12.setBackground(new java.awt.Color(255, 255, 255));
         jLabel12.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
@@ -187,29 +246,67 @@ public class Relatorios extends javax.swing.JFrame {
         jPanel1.add(jLabel12);
         jLabel12.setBounds(360, 170, 230, 29);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECIONAR", "ENTRADAS", "SAIDAS", "EM ESTOQUE", "GERAL" }));
-        jPanel1.add(jComboBox1);
-        jComboBox1.setBounds(360, 470, 270, 30);
+        txtDado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECIONAR", "ENTRADAS", "SAIDAS", "EM ESTOQUE/GERAL" }));
+        txtDado.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                txtDadoItemStateChanged(evt);
+            }
+        });
+        txtDado.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtDadoMouseClicked(evt);
+            }
+        });
+        jPanel1.add(txtDado);
+        txtDado.setBounds(360, 470, 270, 30);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logofamintos.png"))); // NOI18N
         jPanel1.add(jLabel2);
         jLabel2.setBounds(-290, -110, 630, 520);
+        jPanel1.add(txtDia);
+        txtDia.setBounds(700, 210, 270, 30);
+        jPanel1.add(txtAno);
+        txtAno.setBounds(700, 470, 270, 30);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logofamintos.png"))); // NOI18N
         jPanel1.add(jLabel3);
         jLabel3.setBounds(810, 220, 630, 540);
 
         jButton4.setText("GERAR PDF");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton4);
         jButton4.setBounds(600, 540, 150, 30);
+        jPanel1.add(jLabel4);
+        jLabel4.setBounds(650, 290, 20, 30);
+
+        lbltxtDia.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
+        lbltxtDia.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel1.add(lbltxtDia);
+        lbltxtDia.setBounds(680, 170, 20, 30);
+        jPanel1.add(jLabel8);
+        jLabel8.setBounds(680, 210, 20, 30);
+        jPanel1.add(jLabel13);
+        jLabel13.setBounds(680, 210, 20, 30);
+
+        lbltxtMes.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
+        lbltxtMes.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel1.add(lbltxtMes);
+        lbltxtMes.setBounds(680, 290, 30, 30);
+
+        lbltxtAno.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
+        lbltxtAno.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel1.add(lbltxtAno);
+        lbltxtAno.setBounds(680, 430, 30, 30);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1338, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1338, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,6 +316,7 @@ public class Relatorios extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -234,45 +332,188 @@ public class Relatorios extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void txtCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCategoriaActionPerformed
+    private void txtTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTipoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtCategoriaActionPerformed
+    }//GEN-LAST:event_txtTipoActionPerformed
 
     private void txtMesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtMesActionPerformed
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
-        if(txtMes.getText().equals(" JANEIRO")){
-            txtMes.setText(" FEVEREIRO");
-        }else if(txtMes.getText().equals(" FEVEREIRO")){
-            txtMes.setText(" MARÇO");
-        }else if(txtMes.getText().equals(" MARÇO")){
-            txtMes.setText(" ABRIL");
-        }else if(txtMes.getText().equals(" ABRIL")){
-            txtMes.setText(" MAIO");
-        }else if(txtMes.getText().equals(" MAIO")){
-            txtMes.setText(" JUNHO");
-        }else if(txtMes.getText().equals(" JUNHO")){
-            txtMes.setText(" JULHO");
-        }else if(txtMes.getText().equals(" JULHO")){
-            txtMes.setText(" AGOSTO");
-        }else if(txtMes.getText().equals(" AGOSTO")){
-            txtMes.setText(" SETEMBRO");
-        }else if(txtMes.getText().equals(" SETEMBRO")){
-            txtMes.setText(" OUTUBRO");
-        }else if(txtMes.getText().equals(" OUTUBRO")){
-            txtMes.setText(" NOVEMBRO");
-        }else if(txtMes.getText().equals(" NOVEMBRO")){
-            txtMes.setText(" DEZEMBRO");
-        }else if(txtMes.getText().equals(" DEZEMBRO")){
-            txtMes.setText(" JANEIRO");
-        }
+
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void txtPeriodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPeriodoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPeriodoActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        Restricao();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void txtTipoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_txtTipoItemStateChanged
+        if (txtTipo.getSelectedItem().toString().equals("VENDAS")) {
+            txtDado.setSelectedIndex(3);
+            txtDado.setEnabled(false);
+            txtPeriodo.setEnabled(true);
+            txtDia.setEnabled(true);
+            txtSemana.setEnabled(true);
+            txtMes.setEnabled(true);
+            txtAno.setEnabled(true);
+        } else if (txtTipo.getSelectedItem().toString().equals("ESTOQUE") & txtDado.getSelectedItem().toString().equals("EM ESTOQUE/GERAL")) {
+            txtPeriodo.setSelectedIndex(0);
+            txtDado.setEnabled(true);
+            txtPeriodo.setEnabled(false);
+
+        } else {
+            txtDado.setEnabled(true);
+            txtPeriodo.setEnabled(true);
+        }
+        if (txtPeriodo.getSelectedItem().toString().equals("SEMANAL")) {
+            txtSemana.setVisible(true);
+            txtDia.setVisible(false);
+            lbltxtDia.setText("*");
+            lbltxtMes.setText("*");
+            lbltxtAno.setText("*");
+            lbl.setText("Semana de Referência");
+        } else {
+            txtSemana.setVisible(false);
+            txtDia.setVisible(true);
+            lbl.setText("Dia de Referência");
+            if (txtPeriodo.getSelectedItem().toString().equals("MENSAL")) {
+                lbltxtDia.setText("");
+                lbltxtMes.setText("*");
+                lbltxtAno.setText("*");
+            } else if (txtPeriodo.getSelectedItem().toString().equals("ANUAL")) {
+                lbltxtDia.setText("");
+                lbltxtMes.setText("");
+                lbltxtAno.setText("*");
+            } else if (txtPeriodo.getSelectedItem().toString().equals("DIÁRIO")) {
+                lbltxtDia.setText("*");
+                lbltxtMes.setText("*");
+                lbltxtAno.setText("*");
+            } else {
+                lbltxtDia.setText("");
+                lbltxtMes.setText("");
+                lbltxtAno.setText("");
+            }
+        }
+    }//GEN-LAST:event_txtTipoItemStateChanged
+
+    private void txtPeriodoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_txtPeriodoItemStateChanged
+        if (txtPeriodo.getSelectedItem().toString().equals("SEMANAL")) {
+            txtSemana.setVisible(true);
+            txtDia.setVisible(false);
+            lbltxtDia.setText("*");
+            lbltxtMes.setText("*");
+            lbltxtAno.setText("*");
+            lbl.setText("Semana de Referência");
+        } else {
+            txtSemana.setVisible(false);
+            txtDia.setVisible(true);
+            lbl.setText("Dia de Referência");
+            if (txtPeriodo.getSelectedItem().toString().equals("MENSAL")) {
+                lbltxtDia.setText("");
+                lbltxtMes.setText("*");
+                lbltxtAno.setText("*");
+            } else if (txtPeriodo.getSelectedItem().toString().equals("ANUAL")) {
+                lbltxtDia.setText("");
+                lbltxtMes.setText("");
+                lbltxtAno.setText("*");
+            } else if (txtPeriodo.getSelectedItem().toString().equals("DIÁRIO")) {
+                lbltxtDia.setText("*");
+                lbltxtMes.setText("*");
+                lbltxtAno.setText("*");
+            } else {
+                lbltxtDia.setText("");
+                lbltxtMes.setText("");
+                lbltxtAno.setText("");
+            }
+        }
+    }//GEN-LAST:event_txtPeriodoItemStateChanged
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (txtMes.getText().equals(" JANEIRO")) {
+            txtMes.setText(" FEVEREIRO");
+        } else if (txtMes.getText().equals(" FEVEREIRO")) {
+            txtMes.setText(" MARÇO");
+        } else if (txtMes.getText().equals(" MARÇO")) {
+            txtMes.setText(" ABRIL");
+        } else if (txtMes.getText().equals(" ABRIL")) {
+            txtMes.setText(" MAIO");
+        } else if (txtMes.getText().equals(" MAIO")) {
+            txtMes.setText(" JUNHO");
+        } else if (txtMes.getText().equals(" JUNHO")) {
+            txtMes.setText(" JULHO");
+        } else if (txtMes.getText().equals(" JULHO")) {
+            txtMes.setText(" AGOSTO");
+        } else if (txtMes.getText().equals(" AGOSTO")) {
+            txtMes.setText(" SETEMBRO");
+        } else if (txtMes.getText().equals(" SETEMBRO")) {
+            txtMes.setText(" OUTUBRO");
+        } else if (txtMes.getText().equals(" OUTUBRO")) {
+            txtMes.setText(" NOVEMBRO");
+        } else if (txtMes.getText().equals(" NOVEMBRO")) {
+            txtMes.setText(" DEZEMBRO");
+        } else if (txtMes.getText().equals(" DEZEMBRO")) {
+            txtMes.setText(" JANEIRO");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void txtDadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_txtDadoItemStateChanged
+        if (txtDado.getSelectedItem().toString().equals("EM ESTOQUE/GERAL") & txtTipo.getSelectedItem().toString().equals("ESTOQUE")) {
+            txtPeriodo.setSelectedIndex(0);
+            txtPeriodo.setEnabled(false);
+            lbltxtDia.setText("");
+            lbltxtMes.setText("");
+            lbltxtAno.setText("");
+        } else if (txtTipo.getSelectedItem().toString().equals("ESTOQUE")) {
+
+            txtPeriodo.setEnabled(true);
+        }
+        if (txtPeriodo.getSelectedItem().toString().equals("SEMANAL")) {
+            txtSemana.setVisible(true);
+            txtDia.setVisible(false);
+            lbltxtDia.setText("*");
+            lbltxtMes.setText("*");
+            lbltxtAno.setText("*");
+            lbl.setText("Semana de Referência");
+        } else {
+            txtSemana.setVisible(false);
+            txtDia.setVisible(true);
+            lbl.setText("Dia de Referência");
+            if (txtPeriodo.getSelectedItem().toString().equals("MENSAL")) {
+                lbltxtDia.setText("");
+                lbltxtMes.setText("*");
+                lbltxtAno.setText("*");
+            } else if (txtPeriodo.getSelectedItem().toString().equals("ANUAL")) {
+                lbltxtDia.setText("");
+                lbltxtMes.setText("");
+                lbltxtAno.setText("*");
+            } else if (txtPeriodo.getSelectedItem().toString().equals("DIÁRIO")) {
+                lbltxtDia.setText("*");
+                lbltxtMes.setText("*");
+                lbltxtAno.setText("*");
+            } else {
+                lbltxtDia.setText("");
+                lbltxtMes.setText("");
+                lbltxtAno.setText("");
+            }
+        }
+    }//GEN-LAST:event_txtDadoItemStateChanged
+
+    private void txtTipoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTipoMouseClicked
+
+    }//GEN-LAST:event_txtTipoMouseClicked
+
+    private void txtPeriodoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtPeriodoMouseClicked
+
+    }//GEN-LAST:event_txtPeriodoMouseClicked
+
+    private void txtDadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtDadoMouseClicked
+
+    }//GEN-LAST:event_txtDadoMouseClicked
 
     /**
      * @param args the command line arguments
@@ -314,24 +555,355 @@ public class Relatorios extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lbl;
+    private javax.swing.JLabel lbltxtAno;
+    private javax.swing.JLabel lbltxtDia;
+    private javax.swing.JLabel lbltxtMes;
     private javax.swing.JLabel linkft;
-    private javax.swing.JComboBox<String> txtCategoria;
+    private javax.swing.JTextField txtAno;
+    private javax.swing.JComboBox<String> txtDado;
+    private javax.swing.JTextField txtDia;
     private javax.swing.JTextField txtMes;
     private javax.swing.JComboBox<String> txtPeriodo;
+    private javax.swing.JComboBox<String> txtSemana;
+    private javax.swing.JComboBox<String> txtTipo;
     public javax.swing.JLabel txtUser;
     // End of variables declaration//GEN-END:variables
+
+    private void Restricao() {
+        String tp_relat, periodo, tp_dado, mes, semana;
+        int dia, ano;
+
+        tp_relat = txtTipo.getSelectedItem().toString();
+        periodo = txtPeriodo.getSelectedItem().toString();
+        tp_dado = txtDado.getSelectedItem().toString();
+
+        Date dataHoraAtual = new Date();
+        String data = new SimpleDateFormat("dd-MM-yyyy").format(dataHoraAtual);
+        String anoSistema = data.substring(6, 10);
+        int anosSistema = Integer.parseInt(anoSistema);
+
+        if (tp_relat.equals("SELECIONAR") || periodo.equals("SELECIONAR") || tp_dado.equals("SELECIONAR")) {
+            if (tp_dado.equals("EM ESTOQUE/GERAL") & tp_relat.equals("ESTOQUE")) {
+                if (tp_relat.equals("SELECIONAR") || tp_dado.equals("SELECIONAR")) {
+                    JOptionPane.showMessageDialog(null, "Algum campo marcado com 'SELECIONAR'!");
+                } else {
+                    PDF();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Algum campo marcado com 'SELECIONAR'!");
+            }
+
+        } else {
+            if (periodo.equals("SEMANAL")) {
+                if (txtAno.getText().isEmpty() || Integer.parseInt(txtAno.getText()) > anosSistema || txtAno.getText().replaceAll("[0-9]", "").length() != 0 || txtSemana.getSelectedIndex() == 0 || txtAno.getText().length() != 4) {
+                    JOptionPane.showMessageDialog(null, "Algum campo vazio ou preenchido incorretamente!" + "\n" + "Confira os campos Semana/Ano de Referência.");
+                } else {
+                    PDF();
+                }
+            } else if (periodo.equals("DIÁRIO")) {
+                if (txtDia.getText().isEmpty() || txtAno.getText().isEmpty() || Integer.parseInt(txtDia.getText()) < 1 || Integer.parseInt(txtDia.getText()) > 31 || Integer.parseInt(txtAno.getText()) > anosSistema
+                        || txtDia.getText().replaceAll("[0-9]", "").length() != 0 || txtAno.getText().replaceAll("[0-9]", "").length() != 0 || txtDia.getText().isEmpty() || txtAno.getText().isEmpty() || txtAno.getText().length() != 4) {
+                    JOptionPane.showMessageDialog(null, "Algum campo vazio ou preenchido incorretamente!" + "\n" + "Confira os campos Dia/Ano de Referência.");
+                } else {
+                    PDF();
+                }
+            } else if (periodo.equals("MENSAL") || periodo.equals("ANUAL")) {
+                if (txtAno.getText().isEmpty() || Integer.parseInt(txtAno.getText()) > anosSistema || txtAno.getText().replaceAll("[0-9]", "").length() != 0 || txtAno.getText().isEmpty() || txtAno.getText().length() != 4) {
+                    JOptionPane.showMessageDialog(null, "Campo Ano de Referência vazio ou preenchido incorretamente!");
+                } else {
+                    PDF();
+                }
+            } else {
+                PDF();
+            }
+        }
+    }
+
+    private void PDF() {
+        String tp_relat, periodo, tp_dado, mes, semana, dia;
+        int ano;
+
+        tp_relat = txtTipo.getSelectedItem().toString();
+        periodo = txtPeriodo.getSelectedItem().toString();
+        tp_dado = txtDado.getSelectedItem().toString();
+        mes = txtMes.getText();
+        semana = txtSemana.getSelectedItem().toString();
+        dia = txtDia.getText();
+        if (txtAno.getText().isEmpty()) {
+            ano = 0;
+        } else {
+            ano = Integer.parseInt(txtAno.getText());
+        }
+        RelatoriosDAO rdao = new RelatoriosDAO();
+        RelatoriosDTO rdto = new RelatoriosDTO();
+
+        rdto.setTp_relat(tp_relat);
+        rdto.setPeriodo(periodo);
+        rdto.setTp_dado(tp_dado);
+        if (mes.equals(" JANEIRO")) {
+            mes = "01";
+        } else if (mes.equals(" FEVEREIRO")) {
+            mes = "02";
+        } else if (mes.equals(" MARÇO")) {
+            mes = "03";
+        } else if (mes.equals(" ABRIL")) {
+            mes = "04";
+        } else if (mes.equals(" MAIO")) {
+            mes = "05";
+        } else if (mes.equals(" JUNHO")) {
+            mes = "06";
+        } else if (mes.equals(" JULHO")) {
+            mes = "07";
+        } else if (mes.equals(" AGOSTO")) {
+            mes = "08";
+        } else if (mes.equals(" SETEMBRO")) {
+            mes = "09";
+        } else if (mes.equals(" OUTUBRO")) {
+            mes = "10";
+        } else if (mes.equals(" NOVEMBRO")) {
+            mes = "11";
+        } else if (mes.equals(" DEZEMBRO")) {
+            mes = "12";
+        }
+        rdto.setMes(mes);
+        rdto.setSemana(semana);
+        if (dia.length() == 1) {
+            dia = 0 + dia;
+        }
+        rdto.setDia(dia);
+        rdto.setAno(ano);
+        ArrayList<RelatoriosDTO> listar = rdao.PdfGere(rdto);
+        String tipos;
+        if (listar.size() != 0) {
+            if (tp_dado.equals("EM ESTOQUE/GERAL")) {
+                tipos = "EG";
+            } else {
+                tipos = tp_dado.substring(0, 1);
+            }
+            String escrita = "";
+            Date dataHoraAtual = new Date();
+            String data = new SimpleDateFormat("dd-MM-yyyy").format(dataHoraAtual);
+            String hora = new SimpleDateFormat("HH:mm").format(dataHoraAtual);
+            String dataof = data + hora;
+            dataof = dataof.replaceAll("-", "");
+            dataof = dataof.replaceAll(":", "");
+            String datap = "";
+            if (periodo.equals("SEMANAL")) {
+                String sem = semana.replaceAll("SEMANA ", "");
+                escrita = tp_relat.substring(0, 1) + tipos + periodo.substring(0, 1) + "S" + sem + mes + ano;
+                datap = semana + " " + mes + "/" + ano;
+            } else if (periodo.equals("DIÁRIO")) {
+                escrita = tp_relat.substring(0, 1) + tipos + periodo.substring(0, 1) + dia + mes + ano;
+                datap = dia + "/" + mes + "/" + ano;
+            } else if (periodo.equals("ANUAL")) {
+                escrita = tp_relat.substring(0, 1) + tipos + periodo.substring(0, 1) + ano;
+                datap = "" + ano;
+            } else if (periodo.equals("MENSAL")) {
+                escrita = tp_relat.substring(0, 1) + tipos + periodo.substring(0, 1) + mes + ano;
+                datap = mes + "/" + ano;
+            } else {
+                escrita = tipos + dataof;
+                datap = " - " + data.replaceAll("-", "/");
+            }
+
+            Document documento = new Document(A4, -40f, -40f, 20f, 20f);
+            String caminho = "D:\\FamintosJava1.2\\images\\logofamintospdf.png";
+            try {
+                PdfWriter.getInstance(documento, new FileOutputStream("D:\\guardarpdfs\\relatorio\\" + escrita + ".pdf"));
+                documento.open();
+                PdfPTable ptbl;
+                PdfPCell pt1, pt2, pt3, pt4, pt5, pt6, pt7, pt8, pt9, pt10, pt11;
+                double soma = 0;
+                Image img = Image.getInstance(String.format(caminho));
+                img.scaleAbsolute(150, 43);
+                img.setAlignment(Element.ALIGN_CENTER);
+                if (tp_relat.equals("VENDAS")) {
+                    ptbl = new PdfPTable(5);
+                    pt1 = new PdfPCell(new Paragraph("Data"));
+                    pt2 = new PdfPCell(new Paragraph("Produto"));
+                    pt3 = new PdfPCell(new Paragraph("QTD"));
+                    pt4 = new PdfPCell(new Paragraph("R$/Item"));
+                    pt5 = new PdfPCell(new Paragraph("R$/Total"));
+                    BaseColor CYANn = new BaseColor(0, 229, 229);
+                    pt1.setBackgroundColor(CYANn);
+                    pt2.setBackgroundColor(CYANn);
+                    pt3.setBackgroundColor(CYANn);
+                    pt4.setBackgroundColor(CYANn);
+                    pt5.setBackgroundColor(CYANn);
+                    ptbl.addCell(pt1);
+                    ptbl.addCell(pt2);
+                    ptbl.addCell(pt3);
+                    ptbl.addCell(pt4);
+                    ptbl.addCell(pt5);
+
+                    for (int n = 0; n < listar.size(); n++) {
+                        rdto.setBusca(listar.get(n).getCd_comida());
+                        ArrayList<RelatoriosDTO> consultar = rdao.Exibir(rdto);
+                        String comida = consultar.get(n).getNm_comida();
+                        ptbl.addCell(new PdfPCell(new Paragraph(listar.get(n).getDt_venda())));
+                        ptbl.addCell(new PdfPCell(new Paragraph(comida)));
+                        ptbl.addCell(new PdfPCell(new Paragraph(listar.get(n).getQt_comida())));
+                        ptbl.addCell(new PdfPCell(new Paragraph(listar.get(n).getVl_item())));
+                        ptbl.addCell(new PdfPCell(new Paragraph(listar.get(n).getVl_total_item())));
+                        soma = soma + Double.parseDouble(listar.get(n).getVl_total_item());
+                    }
+                } else {
+                    if (tp_dado.equals("EM ESTOQUE/GERAL")) {
+
+                        ptbl = new PdfPTable(8);
+                        pt1 = new PdfPCell(new Paragraph("ID"));
+                        pt2 = new PdfPCell(new Paragraph("Produto"));
+                        pt3 = new PdfPCell(new Paragraph("Categoria"));
+                        pt4 = new PdfPCell(new Paragraph("Lote"));
+                        pt5 = new PdfPCell(new Paragraph("Venc."));
+                        pt6 = new PdfPCell(new Paragraph("QTD"));
+                        pt7 = new PdfPCell(new Paragraph("R$/cd"));
+                        pt8 = new PdfPCell(new Paragraph("Registro"));
+
+                        BaseColor CYANn = new BaseColor(0,255,255);
+                        pt1.setBackgroundColor(CYANn);
+                        pt2.setBackgroundColor(CYANn);
+                        pt3.setBackgroundColor(CYANn);
+                        pt4.setBackgroundColor(CYANn);
+                        pt5.setBackgroundColor(CYANn);
+                        pt6.setBackgroundColor(CYANn);
+                        pt7.setBackgroundColor(CYANn);
+                        pt8.setBackgroundColor(CYANn);
+
+                        ptbl.addCell(pt1);
+                        ptbl.addCell(pt2);
+                        ptbl.addCell(pt3);
+                        ptbl.addCell(pt4);
+                        ptbl.addCell(pt5);
+                        ptbl.addCell(pt6);
+                        ptbl.addCell(pt7);
+                        ptbl.addCell(pt8);
+                        for (int n = 0; n < listar.size(); n++) {
+                            ptbl.addCell(new PdfPCell(new Paragraph(listar.get(n).getId_produto())));
+                            ptbl.addCell(new PdfPCell(new Paragraph(listar.get(n).getProduto())));
+                            ptbl.addCell(new PdfPCell(new Paragraph(listar.get(n).getCategoria())));
+                            ptbl.addCell(new PdfPCell(new Paragraph(listar.get(n).getLote())));
+                            ptbl.addCell(new PdfPCell(new Paragraph(listar.get(n).getVencimento())));
+                            ptbl.addCell(new PdfPCell(new Paragraph(listar.get(n).getQuantidade())));
+                            ptbl.addCell(new PdfPCell(new Paragraph(listar.get(n).getValor())));
+                            ptbl.addCell(new PdfPCell(new Paragraph(String.valueOf(listar.get(n).getData_cadastro()).substring(0, 10))));
+                            soma = soma + ((Double.parseDouble(listar.get(n).getValor())) * (Double.parseDouble(listar.get(n).getQuantidade())));
+                        }
+                    } else {
+                        ptbl = new PdfPTable(8);
+                        pt1 = new PdfPCell(new Paragraph("ID"));
+                        pt2 = new PdfPCell(new Paragraph("Produto"));
+                        pt3 = new PdfPCell(new Paragraph("Categoria"));
+                        pt4 = new PdfPCell(new Paragraph("Lote"));
+                        pt5 = new PdfPCell(new Paragraph("Venc."));
+                        pt6 = new PdfPCell(new Paragraph("R$/cd"));
+                        pt7 = new PdfPCell(new Paragraph("Registro"));
+                        pt8 = new PdfPCell(new Paragraph(""));
+                        if (tp_dado.equals("ENTRADAS")) {
+                            pt8 = new PdfPCell(new Paragraph("Entrada"));
+                        } else if (tp_dado.equals("SAIDAS")) {
+                            pt8 = new PdfPCell(new Paragraph("Saida"));
+                        }
+                        pt9 = new PdfPCell(new Paragraph("Subtotal"));
+
+                        if (tp_dado.equals("ENTRADAS")) {
+                            BaseColor GREENn = new BaseColor(204, 255, 204);
+                            pt1.setBackgroundColor(GREENn);
+                            pt2.setBackgroundColor(GREENn);
+                            pt3.setBackgroundColor(GREENn);
+                            pt4.setBackgroundColor(GREENn);
+                            pt5.setBackgroundColor(GREENn);
+                            pt6.setBackgroundColor(GREENn);
+                            pt7.setBackgroundColor(GREENn);
+                            pt8.setBackgroundColor(GREENn);
+                        } else if (tp_dado.equals("SAIDAS")) {
+                            BaseColor reds = new BaseColor(255, 64, 72);
+                            pt1.setBackgroundColor(reds);
+                            pt2.setBackgroundColor(reds);
+                            pt3.setBackgroundColor(reds);
+                            pt4.setBackgroundColor(reds);
+                            pt5.setBackgroundColor(reds);
+                            pt6.setBackgroundColor(reds);
+                            pt7.setBackgroundColor(reds);
+                            pt8.setBackgroundColor(reds);
+                        }
+                        ptbl.addCell(pt1);
+                        ptbl.addCell(pt2);
+                        ptbl.addCell(pt3);
+                        ptbl.addCell(pt4);
+                        ptbl.addCell(pt5);
+                        ptbl.addCell(pt6);
+                        ptbl.addCell(pt7);
+                        ptbl.addCell(pt8);
+                        for (int n = 0; n < listar.size(); n++) {
+                            ptbl.addCell(new PdfPCell(new Paragraph(listar.get(n).getId_produtoG())));
+                            ptbl.addCell(new PdfPCell(new Paragraph(listar.get(n).getProdutoG())));
+                            ptbl.addCell(new PdfPCell(new Paragraph(listar.get(n).getCategoriaG())));
+                            ptbl.addCell(new PdfPCell(new Paragraph(listar.get(n).getLoteG())));
+                            ptbl.addCell(new PdfPCell(new Paragraph(listar.get(n).getVencimentoG())));
+                            ptbl.addCell(new PdfPCell(new Paragraph(listar.get(n).getValorG())));
+                            ptbl.addCell(new PdfPCell(new Paragraph((String.valueOf(listar.get(n).getData_cadastroG()).substring(0, 10)))));
+
+                            if (tp_dado.equals("ENTRADAS")) {
+                                ptbl.addCell(new PdfPCell(new Paragraph(listar.get(n).getEntrada())));
+                                soma = soma + ((Double.parseDouble(listar.get(n).getEntrada())) * (Double.parseDouble(listar.get(n).getValorG())));
+                            } else if (tp_dado.equals("SAIDAS")) {
+                                ptbl.addCell(new PdfPCell(new Paragraph(listar.get(n).getSaida())));
+                                soma = soma + ((Double.parseDouble(listar.get(n).getSaida())) * (Double.parseDouble(listar.get(n).getValorG())));
+                            }
+                        }
+                    }
+                }
+                StringTokenizer casasN = new StringTokenizer(String.valueOf(soma));
+                String inteiro = casasN.nextToken(".");
+                String decimal = casasN.nextToken(".");
+                if (decimal.length() < 2) {
+                    decimal = decimal + "0";
+                } else {
+                    decimal = decimal.substring(0, 2);
+                }
+                String soma2 = "\n" + "TOTAL: R$" + inteiro + "," + decimal + "                        ";
+                Font fonte = new Font(Font.FontFamily.UNDEFINED, 13, Font.BOLD);
+                Paragraph pgr = new Paragraph(soma2, fonte);
+                pgr.setAlignment(Element.ALIGN_RIGHT);
+                Paragraph pg = new Paragraph();
+                if (tp_relat.equals("ESTOQUE") & tp_dado.equals("EM ESTOQUE/GERAL")) {
+                    pg = new Paragraph("RELATÓRIO DE " + tp_relat + "\n" + tp_dado + "\n" + "Impresso em " + data + " " + hora + "\n" + "\n",fonte);
+                } else {
+                    pg = new Paragraph("RELATÓRIO DE " + tp_relat + "\n" + tp_dado + " " + periodo + " (" + datap + ")" + "\n" + "Impresso em " + data + " " + hora + "\n" + "\n",fonte);
+                }
+                pg.setAlignment(Element.ALIGN_CENTER);
+                documento.add(img);
+                documento.add(pg);
+                documento.add(ptbl);
+                documento.add(pgr);
+
+                Runtime.getRuntime().exec(new String[]{"cmd.exe", "/c", "start", "D:\\guardarpdfs\\relatorio\\" + escrita + ".pdf"});
+
+                documento.close();
+
+            } catch (FileNotFoundException | DocumentException ex) {
+                Logger.getLogger(Relatorios.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Relatorios.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Nenhum registro encontrado para a data de referencia inserida.");
+        }
+
+    }
 }

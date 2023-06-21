@@ -10,7 +10,7 @@ create table Funcionario(
     cpf varchar(14) not null,
     data_cadastro datetime not null
 );
-
+update tbl_venda set statusC='entregue' where  cd_venda in (select cd_venda from tbl_venda where no_ticket='64777afd51582');
 select *from Funcionario;
 
 insert into Funcionario(nome,senha,admissao,email,funcao,cpf,data_cadastro)
@@ -76,7 +76,7 @@ values
 );
 
 select *from tbl_comidas;
-insert into tbl_comidas(nm_comida,vl_preco,cd_categoria,img_comida,qt_estoque,data_cadastro) values('Café','2.50','3','D:\\famintOs\\estetica_imgs\\cafe.jpg','12','2020-04-08 15:06:28');
+insert into tbl_comidas(nm_comida,vl_preco,nm_categoria,img_comida,qt_estoque,data_cadastro) values('Café','2.50','Bebidas','D:\\famintOs\\estetica_imgs\\cafe.jpg','12','2020-04-08 15:06:28');
 
 
 
@@ -84,14 +84,21 @@ CREATE TABLE `tbl_venda` (
 	  `cd_venda` int(11) primary key auto_increment,
 	  `no_Ticket` varchar(13) not null,
       `nome_cliente` varchar(100) not null,
-	  `cd_cliente` int(11) not null,
+	  `cd_cliente` varchar(15) not null,
 	  `cd_comida` int(11) not null,
 	  `qt_comida` int(11) not null,
 	  `vl_item` decimal(10,2) not null,
 	  `vl_total_item` decimal  (10,2) generated always as ((qt_comida * vl_item)) virtual,
 	  `dt_venda` date not null,
 	  `cd_mesa` int not null,
-      `statusC` varchar(12) not null
+      `statusC` varchar(12) not null,
+      `cdg_garcom` varchar(16),
+      `rua` varchar(100),
+      `bairro` varchar(100),
+      `numero` varchar(10),
+      `cidade` varchar(80),
+      `estado` varchar(3),
+      `opcao` varchar(45) not null
 );
 CREATE TABLE `tbl_usuario` (
     `cd_usuario` int(11) auto_increment primary key,
